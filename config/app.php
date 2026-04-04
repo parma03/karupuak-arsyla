@@ -2,7 +2,7 @@
 // config/app.php
 
 define('APP_NAME',    'Karupuak Jangek Arsyla');
-define('APP_URL',     'http://localhost/karupuak-arsyla');
+define('APP_URL',     'http://localhost/kaknani/karupuak-arsyla');
 define('APP_VERSION', '1.0.0');
 define('APP_DEBUG',   true);   // Set false di production
 

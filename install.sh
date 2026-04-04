@@ -2,7 +2,7 @@
 
 echo "Starting installation..."
 
-BASE="/c/xampp/htdocs/Kaknani/karupuak-arsyla"
+BASE="/c/xampp/htdocs/kaknani/karupuak-arsyla"
 
 # ========================
 # BASE

@@ -2,7 +2,7 @@
 
 const APP_URL =
   document.querySelector('meta[name="app-url"]')?.content ||
-  window.location.origin + "/karupuak-arsyla";
+  window.location.origin + "/kaknani/karupuak-arsyla";
 
 /* ── ADD TO CART ─────────────────────────────────────── */
 function addToCart(productId, btn) {
