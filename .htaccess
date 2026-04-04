@@ -1,0 +1,27 @@
+Options -Indexes
+RewriteEngine On
+
+# ── WAJIB untuk XAMPP subfolder ──────────────────────────
+# Sesuaikan jika nama folder berbeda dari karupuak-arsyla
+RewriteBase /karupuak-arsyla/
+
+# Jangan proses file / folder yang benar-benar ada di disk
+# (aset: css, js, gambar, upload, dll)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Teruskan semua request ke index.php, URL asli dikirim sebagai ?url=
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Proteksi file sensitif
+<FilesMatch "\.(env|log|sql|md)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
