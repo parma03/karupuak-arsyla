@@ -1,6 +1,6 @@
 /* public/js/cart.js — KARUPUAK JANGEK ARSYLA */
 
-const CART_URL = (window.APP_URL || "") + "/kaknani/karupuak-arsyla";
+const CART_URL = (window.APP_URL || "") + "/karupuak-arsyla";
 
 /* ── UPDATE QTY ──────────────────────────────────────── */
 function updateCart(productId, newQty) {

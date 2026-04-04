@@ -4,7 +4,7 @@
  * KARUPUAK JANGEK ARSYLA — E-Commerce Platform
  * Entry Point (Front Controller)
  *
- * URL: http://localhost/kaknani/karupuak-arsyla/
+ * URL: http://localhost/karupuak-arsyla/
  */
 
 define('ROOT_PATH', __DIR__);
