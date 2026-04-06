@@ -591,4 +591,4 @@ Urutan pengerjaan yang direkomendasikan:
 
 ---
 
-_Dibuat untuk: KARUPUAK JANGEK ARSYLA © 2025_
+_Dibuat untuk: KARUPUAK JANGEK ARSYLA © 2026_
