@@ -37,8 +37,7 @@
                         </td>
                         <td>
                             <?php if (!in_array($p['status'], ['settlement', 'capture'])): ?>
-                                <form method="POST" action="<?= APP_URL ?>/admin/payments/<?= $p['id'] ?>/verify"
-                                    onsubmit="return confirm('Verifikasi pembayaran ini?')">
+                                <form method="POST" action="<?= APP_URL ?>/admin/payments/<?= $p['id'] ?>/verify" onsubmit="return false" data-confirm="Verifikasi pembayaran ini?">
                                     <button type="submit" class="btn btn-sm btn-success">
                                         <i class="bi bi-check-circle me-1"></i>Verifikasi
                                     </button>

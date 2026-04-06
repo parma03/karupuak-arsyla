@@ -35,8 +35,7 @@
                                     onclick="openEditCat(<?= $cat->id ?>, '<?= addslashes($cat->name) ?>', '<?= addslashes($cat->description ?? '') ?>', <?= $cat->isActive ? 1 : 0 ?>, <?= $cat->sortOrder ?>)">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <form method="POST" action="<?= APP_URL ?>/admin/categories/<?= $cat->id ?>/delete"
-                                    onsubmit="return confirm('Hapus kategori ini? Pastikan tidak ada produk terkait.')">
+                                <form method="POST" action="<?= APP_URL ?>/admin/categories/<?= $cat->id ?>/delete" onsubmit="return false" data-confirm="Hapus kategori ini? Pastikan tidak ada produk terkait.">
                                     <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                                 </form>
                             </div>

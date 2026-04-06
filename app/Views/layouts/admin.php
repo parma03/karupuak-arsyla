@@ -37,7 +37,9 @@
                 ['icon' => 'bi-bar-chart-line', 'label' => 'Laporan',       'url' => 'admin/reports'],
             ];
             foreach ($menu as $m):
-                $active = (str_starts_with($uri, $m['url'])) ? 'active' : '';
+                $active = ($m['url'] === 'admin')
+                    ? ($uri === 'admin' ? 'active' : '')
+                    : (str_starts_with($uri, $m['url']) ? 'active' : '');
             ?>
                 <a href="<?= APP_URL ?>/<?= $m['url'] ?>" class="ka-sidebar-link <?= $active ?>">
                     <i class="bi <?= $m['icon'] ?>"></i>
@@ -89,6 +91,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="<?= APP_URL ?>/public/js/app.js"></script>

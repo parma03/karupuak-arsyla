@@ -4,6 +4,28 @@ const APP_URL =
   document.querySelector('meta[name="app-url"]')?.content ||
   window.location.origin + "/karupuak-arsyla";
 
+/* ── INTERCEPT SEMUA FORM DENGAN data-confirm ────────── */
+document.addEventListener("submit", function (e) {
+  const form = e.target;
+  const msg = form.dataset.confirm;
+  if (!msg) return;
+
+  e.preventDefault();
+  confirmDialog(
+    msg,
+    () => {
+      form.removeAttribute("data-confirm");
+      form.submit();
+    },
+    {
+      title: form.dataset.confirmTitle || "Konfirmasi",
+      confirmText: form.dataset.confirmOk || "Ya, Lanjutkan",
+      cancelText: form.dataset.confirmCancel || "Batal",
+      confirmColor: form.dataset.confirmColor || "#dc3545",
+    },
+  );
+});
+
 /* ── ADD TO CART ─────────────────────────────────────── */
 function addToCart(productId, btn) {
   if (btn.dataset.loginRequired) {
@@ -117,3 +139,31 @@ document.querySelectorAll(".alert:not(.alert-permanent)").forEach((el) => {
     bsAlert.close();
   }, 4500);
 });
+
+/* ── SWEETALERT2 ──── */
+function confirmDialog(message, onConfirm, options = {}) {
+  const defaults = {
+    title: options.title || "Konfirmasi",
+    text: message,
+    icon: options.icon || "warning",
+    showCancelButton: true,
+    confirmButtonText: options.confirmText || "Ya, Lanjutkan",
+    cancelButtonText: options.cancelText || "Batal",
+    confirmButtonColor: options.confirmColor || "#dc3545",
+    cancelButtonColor: options.cancelColor || "#6c757d",
+    reverseButtons: true,
+    focusCancel: true,
+    customClass: {
+      popup: "rounded-4 shadow-sm",
+      confirmButton: "btn btn-sm px-4",
+      cancelButton: "btn btn-sm px-4 me-2",
+    },
+    buttonsStyling: false,
+  };
+
+  Swal.fire(defaults).then((result) => {
+    if (result.isConfirmed && typeof onConfirm === "function") {
+      onConfirm();
+    }
+  });
+}

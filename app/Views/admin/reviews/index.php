@@ -40,8 +40,7 @@
                             </span>
                         </td>
                         <td>
-                            <form method="POST" action="<?= APP_URL ?>/admin/reviews/<?= $r->id ?>/delete"
-                                onsubmit="return confirm('Hapus ulasan ini?')">
+                            <form method="POST" action="<?= APP_URL ?>/admin/reviews/<?= $r->id ?>/delete" onsubmit="return false" data-confirm="Hapus ulasan ini?">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">
                                     <i class="bi bi-trash"></i>
                                 </button>

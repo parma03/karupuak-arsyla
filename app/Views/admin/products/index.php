@@ -89,8 +89,7 @@
                                     class="btn btn-sm btn-outline-primary" title="Edit">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <form method="POST" action="<?= APP_URL ?>/admin/products/<?= $p->id ?>/delete"
-                                    onsubmit="return confirm('Hapus produk ini?')">
+                                <form method="POST" action="<?= APP_URL ?>/admin/products/<?= $p->id ?>/delete" onsubmit="return false" data-confirm="Hapus produk ini?">
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
                                         <i class="bi bi-trash"></i>
                                     </button>

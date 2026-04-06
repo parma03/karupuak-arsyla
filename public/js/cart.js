@@ -53,37 +53,45 @@ function updateCart(productId, newQty) {
 
 /* ── REMOVE ITEM ─────────────────────────────────────── */
 function removeFromCart(productId) {
-  if (!confirm("Hapus produk dari keranjang?")) return;
-
-  fetch(APP_URL + "/cart/remove", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "X-Requested-With": "XMLHttpRequest",
+  confirmDialog(
+    "Produk akan dihapus dari keranjang.",
+    () => {
+      fetch(APP_URL + "/cart/remove", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: `product_id=${productId}`,
+      })
+        .then((r) => r.json())
+        .then((res) => {
+          if (res.success) {
+            const row = document.getElementById("cart-item-" + productId);
+            if (row) {
+              row.style.transition = "opacity .3s, transform .3s";
+              row.style.opacity = "0";
+              row.style.transform = "translateX(20px)";
+              setTimeout(() => {
+                row.remove();
+                recalcCartTotal();
+                checkEmptyCart();
+              }, 300);
+            }
+            if (typeof updateCartBadge === "function")
+              updateCartBadge(res.cart_count);
+            if (typeof showToast === "function")
+              showToast("Produk dihapus dari keranjang", "success");
+          }
+        })
+        .catch(() => showToast("Terjadi kesalahan", "danger"));
     },
-    body: `product_id=${productId}`,
-  })
-    .then((r) => r.json())
-    .then((res) => {
-      if (res.success) {
-        const row = document.getElementById("cart-item-" + productId);
-        if (row) {
-          row.style.transition = "opacity .3s, transform .3s";
-          row.style.opacity = "0";
-          row.style.transform = "translateX(20px)";
-          setTimeout(() => {
-            row.remove();
-            recalcCartTotal();
-            checkEmptyCart();
-          }, 300);
-        }
-        if (typeof updateCartBadge === "function")
-          updateCartBadge(res.cart_count);
-        if (typeof showToast === "function")
-          showToast("Produk dihapus dari keranjang", "success");
-      }
-    })
-    .catch(() => showToast("Terjadi kesalahan", "danger"));
+    {
+      title: "Hapus Produk?",
+      confirmText: "Ya, Hapus",
+      confirmColor: "#dc3545",
+    },
+  );
 }
 
 /* ── RECALC TOTAL ────────────────────────────────────── */

@@ -37,6 +37,8 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="<?= APP_URL ?>/public/css/custom.css" rel="stylesheet">
     <script src="<?= APP_URL ?>/public/js/app.js"></script>

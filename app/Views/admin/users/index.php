@@ -59,8 +59,7 @@
                             <div class="d-flex gap-1">
                                 <a href="<?= APP_URL ?>/admin/users/<?= $u->id ?>/edit" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
                                 <?php if ($u->role !== 'owner'): ?>
-                                    <form method="POST" action="<?= APP_URL ?>/admin/users/<?= $u->id ?>/delete"
-                                        onsubmit="return confirm('Hapus user ini?')">
+                                    <form method="POST" action="<?= APP_URL ?>/admin/users/<?= $u->id ?>/delete" onsubmit="return false" data-confirm="Hapus user ini?">
                                         <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                                     </form>
                                 <?php endif; ?>
