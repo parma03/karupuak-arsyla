@@ -1,13 +1,15 @@
 <?php
-// app/Controllers/CartController.php
+// app/Controllers/OrderController.php
 namespace App\Controllers;
 
-use Core\{Request, Response, Session, Middleware};
-use Application\Commands\Cart\{AddToCartCommand, AddToCartHandler, RemoveFromCartCommand, RemoveFromCartHandler, UpdateCartQtyCommand, UpdateCartQtyHandler};
+use Core\{Request, Response, Session, Middleware, Validator};
+use Application\Commands\Order\{CreateOrderCommand, CreateOrderHandler};
 use Application\Queries\Cart\{GetCartQuery, GetCartHandler};
+use Application\Queries\Order\{GetOrderListQuery, GetOrderListHandler, GetOrderDetailQuery, GetOrderDetailHandler};
 use Infrastructure\Persistence\MySQLCartRepository;
+use Infrastructure\Shipping\RajaOngkirService;
 
-class CartController
+class OrderController
 {
     private Request  $req;
     private Response $res;
@@ -18,100 +20,175 @@ class CartController
         $this->res = new Response();
     }
 
-    public function index(): void
+    public function checkoutForm(): void
     {
         Middleware::auth();
 
-        $cart      = (new GetCartHandler())->handle(new GetCartQuery(Session::userId()));
+        $cart = (new GetCartHandler())->handle(new GetCartQuery(Session::userId()));
+        if ($cart->isEmpty()) {
+            $this->res->setFlash('warning', 'Keranjang Anda kosong.');
+            $this->res->redirect('cart');
+        }
+
         $cartCount = (new MySQLCartRepository())->itemCount(Session::userId());
 
-        $this->res->render('cart.index', [
-            'title'     => 'Keranjang Belanja',
+        // Data user yang sudah login untuk pre-fill form
+        $pdo  = getDB();
+        $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ? LIMIT 1');
+        $stmt->execute([Session::userId()]);
+        $user = $stmt->fetch();
+
+        $this->res->render('checkout.index', [
+            'title'     => 'Checkout — Karupuak Arsyla',
             'cart'      => $cart,
             'cartCount' => $cartCount,
+            'user'      => $user,
+            'couriers'  => ['jne', 'pos', 'tiki'],
         ]);
     }
 
-    public function add(): void
+    public function checkout(): void
     {
-        // Jika belum login, redirect ke login
-        if (!Session::isLoggedIn()) {
-            if ($this->req->isAjax()) {
-                $this->res->json(['success' => false, 'redirect' => APP_URL . '/login']);
-            }
-            $this->res->setFlash('warning', 'Silakan login untuk menambah ke keranjang.');
-            $this->res->redirect('login');
+        Middleware::auth();
+
+        $validator = new Validator();
+        $data = [
+            'name'            => $this->req->post('name'),
+            'phone'           => $this->req->post('phone'),
+            'address'         => $this->req->post('address'),
+            'city_id'         => $this->req->post('city_id'),
+            'city_name'       => $this->req->post('city_name'),
+            'province'        => $this->req->post('province'),
+            'postal_code'     => $this->req->post('postal_code'),
+            'courier'         => $this->req->post('courier'),
+            'courier_service' => $this->req->post('courier_service'),
+            'shipping_cost'   => $this->req->post('shipping_cost'),
+            'notes'           => $this->req->post('notes'),
+        ];
+
+        if (!$validator->validate($data, [
+            'name'            => 'required|min:2',
+            'phone'           => 'required|min:10',
+            'address'         => 'required|min:10',
+            'city_id'         => 'required|numeric',
+            'courier'         => 'required',
+            'courier_service' => 'required',
+            'shipping_cost'   => 'required|numeric',
+        ])) {
+            $this->res->setFlash('danger', 'Data pengiriman tidak lengkap.');
+            $this->res->redirect('checkout');
         }
 
-        $productId = (int)$this->req->post('product_id');
-        $qty       = max(1, (int)$this->req->post('qty', 1));
-
         try {
-            (new AddToCartHandler())->handle(new AddToCartCommand(Session::userId(), $productId, $qty));
-            $count = (new MySQLCartRepository())->itemCount(Session::userId());
+            $orderId = (new CreateOrderHandler())->handle(new CreateOrderCommand(
+                userId: Session::userId(),
+                name: $data['name'],
+                phone: $data['phone'],
+                address: $data['address'],
+                cityId: (int)$data['city_id'],
+                cityName: $data['city_name'],
+                province: $data['province'],
+                postalCode: $data['postal_code'],
+                courier: $data['courier'],
+                courierService: $data['courier_service'],
+                shippingCost: (float)$data['shipping_cost'],
+                notes: $data['notes'] ?: null,
+            ));
 
-            if ($this->req->isAjax()) {
-                $this->res->json(['success' => true, 'cart_count' => $count, 'message' => 'Produk ditambahkan ke keranjang!']);
-            }
-            $this->res->setFlash('success', 'Produk berhasil ditambahkan ke keranjang.');
+            $this->res->redirect('payment/' . $orderId);
         } catch (\RuntimeException $e) {
-            if ($this->req->isAjax()) {
-                $this->res->json(['success' => false, 'message' => $e->getMessage()]);
-            }
             $this->res->setFlash('danger', $e->getMessage());
+            $this->res->redirect('checkout');
         }
-
-        $this->res->redirect('cart');
     }
 
-    public function update(): void
+    public function success(): void
+    {
+        Middleware::auth();
+        $orderId = (int)$this->req->get('order_id');
+        $this->res->render('checkout.success', [
+            'title'   => 'Pesanan Berhasil',
+            'orderId' => $orderId,
+        ]);
+    }
+
+    public function myOrders(): void
     {
         Middleware::auth();
 
-        $productId = (int)$this->req->post('product_id');
-        $qty       = (int)$this->req->post('qty');
+        $result    = (new GetOrderListHandler())->handle(new GetOrderListQuery(
+            userId: Session::userId(),
+            page: (int)$this->req->get('page', 1),
+            perPage: 10,
+            status: $this->req->get('status'),
+        ));
+        $cartCount = (new MySQLCartRepository())->itemCount(Session::userId());
 
-        try {
-            (new UpdateCartQtyHandler())->handle(new UpdateCartQtyCommand(Session::userId(), $productId, $qty));
-            $cart  = (new GetCartHandler())->handle(new GetCartQuery(Session::userId()));
-            $count = (new MySQLCartRepository())->itemCount(Session::userId());
-
-            if ($this->req->isAjax()) {
-                $this->res->json([
-                    'success'    => true,
-                    'cart_count' => $count,
-                    'subtotal'   => 'Rp ' . number_format($cart->subtotal(), 0, ',', '.'),
-                ]);
-            }
-        } catch (\RuntimeException $e) {
-            if ($this->req->isAjax()) {
-                $this->res->json(['success' => false, 'message' => $e->getMessage()]);
-            }
-        }
-
-        $this->res->redirect('cart');
+        $this->res->render('order.list', [
+            'title'      => 'Pesanan Saya',
+            'orders'     => $result['data'],
+            'pagination' => $result,
+            'cartCount'  => $cartCount,
+        ]);
     }
 
-    public function remove(): void
+    public function detail(string $id): void
     {
         Middleware::auth();
 
-        $productId = (int)$this->req->post('product_id');
-
         try {
-            (new RemoveFromCartHandler())->handle(new RemoveFromCartCommand(Session::userId(), $productId));
-            $count = (new MySQLCartRepository())->itemCount(Session::userId());
-
-            if ($this->req->isAjax()) {
-                $this->res->json(['success' => true, 'cart_count' => $count]);
-            }
+            $data = (new GetOrderDetailHandler())->handle(
+                new GetOrderDetailQuery((int)$id, Session::userId())
+            );
         } catch (\RuntimeException $e) {
-            if ($this->req->isAjax()) {
-                $this->res->json(['success' => false, 'message' => $e->getMessage()]);
+            $this->res->render404();
+        }
+
+        $cartCount = (new MySQLCartRepository())->itemCount(Session::userId());
+
+        // Cek sudah review belum
+        $pdo = getDB();
+        $reviewedProducts = [];
+        foreach ($data['items'] as $item) {
+            $stmt = $pdo->prepare(
+                'SELECT COUNT(*) FROM reviews WHERE user_id=? AND product_id=? AND order_id=?'
+            );
+            $stmt->execute([Session::userId(), $item->productId, $data['order']->id]);
+            if ((int)$stmt->fetchColumn() > 0) {
+                $reviewedProducts[] = $item->productId;
             }
         }
 
-        $this->res->setFlash('success', 'Produk dihapus dari keranjang.');
-        $this->res->redirect('cart');
+        $this->res->render('order.detail', [
+            'title'            => 'Detail Pesanan #' . $data['order']->orderCode,
+            'order'            => $data['order'],
+            'items'            => $data['items'],
+            'payment'          => $data['payment'],
+            'shipment'         => $data['shipment'],
+            'cartCount'        => $cartCount,
+            'reviewedProducts' => $reviewedProducts,
+        ]);
+    }
+
+    public function tracking(string $id): void
+    {
+        Middleware::auth();
+
+        try {
+            $data = (new GetOrderDetailHandler())->handle(
+                new GetOrderDetailQuery((int)$id, Session::userId())
+            );
+        } catch (\RuntimeException $e) {
+            $this->res->render404();
+        }
+
+        $cartCount = (new MySQLCartRepository())->itemCount(Session::userId());
+
+        $this->res->render('order.tracking', [
+            'title'    => 'Lacak Pesanan #' . $data['order']->orderCode,
+            'order'    => $data['order'],
+            'shipment' => $data['shipment'],
+            'cartCount' => $cartCount,
+        ]);
     }
 }
