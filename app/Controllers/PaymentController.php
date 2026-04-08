@@ -28,6 +28,7 @@ class PaymentController
             );
         } catch (\RuntimeException $e) {
             $this->res->render404();
+            return;
         }
 
         $order = $detail['order'];
@@ -35,6 +36,7 @@ class PaymentController
         if ($order->paymentStatus === 'paid') {
             $this->res->setFlash('info', 'Pesanan ini sudah dibayar.');
             $this->res->redirect('orders/' . $orderId);
+            return;
         }
 
         try {
@@ -44,6 +46,7 @@ class PaymentController
         } catch (\RuntimeException $e) {
             $this->res->setFlash('danger', $e->getMessage());
             $this->res->redirect('orders');
+            return;
         }
 
         $cartCount = (new MySQLCartRepository())->itemCount(Session::userId());

@@ -59,7 +59,8 @@ class Router
     private function buildPattern(string $route): string
     {
         // Ganti {param} dengan regex capture group
-        $pattern = preg_replace('/\{[a-z_]+\}/', '([^/]+)', $route);
+        // Mendukung camelCase seperti {orderId}, {productId}, dll.
+        $pattern = preg_replace('/\{[a-zA-Z_]+\}/', '([^/]+)', $route);
         return '#^' . $pattern . '$#';
     }
 }

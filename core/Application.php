@@ -44,9 +44,10 @@ class Application
         $r->get('orders/{id}/tracking',   'OrderController@tracking');
 
         // ── PAYMENT ───────────────────────────────────────────────
-        $r->get('payment/{orderId}',      'PaymentController@pay');
-        $r->post('payment/callback',      'PaymentController@callback');  // Midtrans webhook
+        // PENTING: route statis harus didaftarkan SEBELUM route dinamis
         $r->get('payment/finish',         'PaymentController@finish');
+        $r->post('payment/callback',      'PaymentController@callback');  // Midtrans webhook
+        $r->get('payment/{orderId}',      'PaymentController@pay');
 
         // ── REVIEW ────────────────────────────────────────────────
         $r->get('review/{orderId}',       'ReviewController@form');
