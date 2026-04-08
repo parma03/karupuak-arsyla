@@ -134,8 +134,9 @@
                     <?php if ($order->status === 'shipped'): ?>
                         <hr class="my-3">
                         <form method="POST" action="<?= APP_URL ?>/orders/<?= $order->id ?>/confirm"
-                            onsubmit="return confirm('Konfirmasi bahwa pesanan sudah diterima?')">
-                            <button type="submit" class="btn btn-success w-100">
+                            id="confirm-form-detail">
+                            <button type="button" class="btn btn-success w-100"
+                                onclick="konfirmasiPesananDetail()">
                                 <i class="bi bi-check-circle me-2"></i>Pesanan Sudah Diterima
                             </button>
                         </form>
@@ -148,3 +149,24 @@
         </div>
     </div>
 </div>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function konfirmasiPesananDetail() {
+        Swal.fire({
+            title: 'Konfirmasi Penerimaan',
+            text: 'Konfirmasi bahwa pesanan sudah diterima?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-check-circle me-1"></i>Ya, Sudah Diterima',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('confirm-form-detail').submit();
+            }
+        });
+    }
+</script>

@@ -51,8 +51,9 @@
                                     <i class="bi bi-geo-alt me-1"></i>Lacak
                                 </a>
                                 <form method="POST" action="<?= APP_URL ?>/orders/<?= $order->id ?>/confirm"
-                                    onsubmit="return confirm('Konfirmasi pesanan sudah diterima?')" class="d-inline">
-                                    <button type="submit" class="btn btn-success btn-sm">
+                                    id="confirm-form-<?= $order->id ?>" class="d-inline">
+                                    <button type="button" class="btn btn-success btn-sm"
+                                        onclick="konfirmasiPesanan('<?= $order->id ?>')">
                                         <i class="bi bi-check-circle me-1"></i>Terima
                                     </button>
                                 </form>
@@ -67,3 +68,25 @@
         </div>
     <?php endif; ?>
 </div>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function konfirmasiPesanan(orderId) {
+        Swal.fire({
+            title: 'Konfirmasi Penerimaan',
+            text: 'Konfirmasi pesanan sudah diterima?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-check-circle me-1"></i>Ya, Sudah Diterima',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('confirm-form-' + orderId).submit();
+            }
+        });
+    }
+</script>
