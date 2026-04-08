@@ -131,6 +131,18 @@
                             <i class="bi bi-credit-card me-2"></i>Bayar Sekarang
                         </a>
                     <?php endif; ?>
+                    <?php if ($order->status === 'shipped'): ?>
+                        <hr class="my-3">
+                        <form method="POST" action="<?= APP_URL ?>/orders/<?= $order->id ?>/confirm"
+                            onsubmit="return confirm('Konfirmasi bahwa pesanan sudah diterima?')">
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="bi bi-check-circle me-2"></i>Pesanan Sudah Diterima
+                            </button>
+                        </form>
+                        <div class="text-muted small text-center mt-2">
+                            Klik jika barang sudah sampai di tangan Anda.
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

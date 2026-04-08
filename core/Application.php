@@ -42,6 +42,7 @@ class Application
         $r->get('orders',                 'OrderController@myOrders');
         $r->get('orders/{id}',            'OrderController@detail');
         $r->get('orders/{id}/tracking',   'OrderController@tracking');
+        $r->post('orders/{id}/confirm',   'OrderController@confirmDelivery');
 
         // ── PAYMENT ───────────────────────────────────────────────
         // PENTING: route statis harus didaftarkan SEBELUM route dinamis

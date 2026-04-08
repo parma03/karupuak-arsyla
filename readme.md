@@ -303,6 +303,8 @@ define('DB_PASS', '');      // Isi password jika ada
 
 #### 4. Konfigurasi Midtrans
 
+ssh -R 80:localhost:80 nokey@localhost.run
+
 Edit file `config/midtrans.php`:
 
 ```php

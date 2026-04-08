@@ -30,28 +30,51 @@ class UpdateOrderStatusHandler implements CommandHandlerInterface
 
         $this->orderRepo->updateStatus($command->orderId, $command->status);
 
-        // Jika shipped, update/insert shipment tracking
-        if ($command->status === 'shipped' && $command->trackingNumber) {
-            $pdo = getDB();
+        $pdo = getDB();
+
+        // Saat status processing → buat entri shipment awal dengan status 'packing'
+        if ($command->status === 'processing') {
+            $tracking = $command->trackingNumber ?? '';
+            $stmt = $pdo->prepare("
+                INSERT INTO shipments (order_id, courier, tracking_number, status)
+                VALUES (?, ?, ?, 'packing')
+                ON DUPLICATE KEY UPDATE
+                    status = IF(status = 'packing', 'packing', status)
+            ");
+            $stmt->execute([$command->orderId, $order->courier, $tracking]);
+        }
+
+        // Saat status shipped → selalu insert/update shipment (tracking boleh kosong)
+        if ($command->status === 'shipped') {
+            $tracking = $command->trackingNumber ?? '';
             $stmt = $pdo->prepare("
                 INSERT INTO shipments (order_id, courier, tracking_number, status, shipped_at)
-                VALUES (:order_id, :courier, :tracking, 'shipped', NOW())
+                VALUES (?, ?, ?, 'shipped', NOW())
                 ON DUPLICATE KEY UPDATE
-                    tracking_number = VALUES(tracking_number),
-                    status = 'shipped',
-                    shipped_at = NOW()
+                    tracking_number = IF(? <> '', ?, tracking_number),
+                    status          = 'shipped',
+                    shipped_at      = NOW()
             ");
             $stmt->execute([
-                ':order_id' => $command->orderId,
-                ':courier'  => $order->courier,
-                ':tracking' => $command->trackingNumber,
+                $command->orderId,
+                $order->courier,
+                $tracking,
+                $tracking,
+                $tracking,
             ]);
         }
 
+        // Saat status delivered → pastikan shipment ada dan tandai delivered
         if ($command->status === 'delivered') {
-            $pdo = getDB();
-            $pdo->prepare("UPDATE shipments SET status='delivered', delivered_at=NOW() WHERE order_id=?")
-                ->execute([$command->orderId]);
+            $tracking = $command->trackingNumber ?? '';
+            $stmt = $pdo->prepare("
+                INSERT INTO shipments (order_id, courier, tracking_number, status, shipped_at, delivered_at)
+                VALUES (?, ?, ?, 'delivered', NOW(), NOW())
+                ON DUPLICATE KEY UPDATE
+                    status       = 'delivered',
+                    delivered_at = NOW()
+            ");
+            $stmt->execute([$command->orderId, $order->courier, $tracking]);
         }
 
         return true;

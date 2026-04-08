@@ -168,6 +168,36 @@ class OrderController
         ]);
     }
 
+    public function confirmDelivery(string $id): void
+    {
+        Middleware::auth();
+
+        $pdo  = getDB();
+        $stmt = $pdo->prepare(
+            "SELECT id FROM orders WHERE id = ? AND user_id = ? AND status = 'shipped' LIMIT 1"
+        );
+        $stmt->execute([$id, Session::userId()]);
+
+        if (!$stmt->fetch()) {
+            $this->res->setFlash('danger', 'Pesanan tidak ditemukan atau belum dalam status dikirim.');
+            $this->res->redirect('orders');
+            return;
+        }
+
+        // Update order status ke delivered
+        $pdo->prepare("UPDATE orders SET status = 'delivered' WHERE id = ?")->execute([$id]);
+
+        // Update atau insert shipments
+        $pdo->prepare("
+            INSERT INTO shipments (order_id, courier, status, delivered_at)
+            SELECT id, courier, 'delivered', NOW() FROM orders WHERE id = ?
+            ON DUPLICATE KEY UPDATE status = 'delivered', delivered_at = NOW()
+        ")->execute([$id]);
+
+        $this->res->setFlash('success', 'Pesanan berhasil dikonfirmasi diterima. Terima kasih sudah berbelanja!');
+        $this->res->redirect('orders/' . $id);
+    }
+
     public function tracking(string $id): void
     {
         Middleware::auth();

@@ -50,6 +50,12 @@
                                 <a href="<?= APP_URL ?>/orders/<?= $order->id ?>/tracking" class="btn btn-outline-info btn-sm">
                                     <i class="bi bi-geo-alt me-1"></i>Lacak
                                 </a>
+                                <form method="POST" action="<?= APP_URL ?>/orders/<?= $order->id ?>/confirm"
+                                    onsubmit="return confirm('Konfirmasi pesanan sudah diterima?')" class="d-inline">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-circle me-1"></i>Terima
+                                    </button>
+                                </form>
                             <?php endif; ?>
                             <a href="<?= APP_URL ?>/orders/<?= $order->id ?>" class="btn btn-outline-secondary btn-sm">
                                 Detail
