@@ -11,9 +11,20 @@ class Request
 
     public function url(): string
     {
-        // Ambil URL dari query string atau PATH_INFO
-        $url = $_GET['url'] ?? '';
-        return trim($url, '/');
+        // Ambil URI dari server, lalu buang query string
+        $uri = $_SERVER['REQUEST_URI'] ?? '/';
+        if (($pos = strpos($uri, '?')) !== false) {
+            $uri = substr($uri, 0, $pos);
+        }
+
+        // Buang base path (subfolder tempat app berada)
+        // sehingga hasilnya selalu relatif: "cart", "admin/products", dst.
+        $basePath = defined('APP_BASE_PATH') ? APP_BASE_PATH : '';
+        if ($basePath !== '' && str_starts_with($uri, $basePath)) {
+            $uri = substr($uri, strlen($basePath));
+        }
+
+        return trim($uri, '/');
     }
 
     public function get(string $key, mixed $default = null): mixed

@@ -1,27 +1,15 @@
 Options -Indexes
+
 RewriteEngine On
 
-# ── WAJIB untuk XAMPP subfolder ──────────────────────────
-# Sesuaikan jika nama folder berbeda dari karupuak-arsyla
-RewriteBase /karupuak-arsyla/
+# Redirect ke HTTPS (aktifkan jika server pakai SSL)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Jangan proses file / folder yang benar-benar ada di disk
-# (aset: css, js, gambar, upload, dll)
+# Jangan redirect file/folder yang memang ada secara fisik
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Teruskan semua request ke index.php, URL asli dikirim sebagai ?url=
-RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
-
-# Security headers
-<IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set X-XSS-Protection "1; mode=block"
-</IfModule>
-
-# Proteksi file sensitif
-<FilesMatch "\.(env|log|sql|md)$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
+# Semua request diarahkan ke index.php
+# Bekerja di subfolder manapun tanpa perlu ubah RewriteBase
+RewriteRule ^ index.php [QSA,L]
