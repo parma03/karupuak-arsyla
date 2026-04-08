@@ -164,7 +164,7 @@ C:/xampp/htdocs/karupuak-arsyla/
 │       │   └── MidtransService.php
 │       │
 │       └── Shipping/
-│           └── RajaOngkirService.php   ← Cek ongkir otomatis
+│           └── SimulatedShippingService.php   ← Cek ongkir otomatis
 │
 ├── app/                               ← Interface/Presentation Layer
 │   │
@@ -273,7 +273,6 @@ C:/xampp/htdocs/karupuak-arsyla/
 - XAMPP (PHP 8.0+, MySQL 5.7+)
 - Browser modern
 - Akun Midtrans (Sandbox untuk testing)
-- Akun RajaOngkir (untuk cek ongkir otomatis)
 
 ### Langkah Instalasi
 
@@ -312,22 +311,14 @@ define('MIDTRANS_CLIENT_KEY', 'SB-Mid-client-XXXX');
 define('MIDTRANS_IS_PRODUCTION', false);              // true jika sudah live
 ```
 
-#### 5. Konfigurasi RajaOngkir
-
-Edit file `config/app.php`:
-
-```php
-define('RAJAONGKIR_API_KEY', 'your_api_key_here');
-```
-
-#### 6. Set Permission Upload
+#### 5. Set Permission Upload
 
 ```
 Pastikan folder public/uploads/products/ bisa ditulis (writable)
 Di Windows XAMPP: klik kanan → Properties → Security → beri akses Full Control
 ```
 
-#### 7. Jalankan Aplikasi
+#### 6. Jalankan Aplikasi
 
 Buka browser: `http://localhost/karupuak-arsyla/`
 
@@ -374,7 +365,7 @@ Buka browser: `http://localhost/karupuak-arsyla/`
                        │
 ┌──────────────────────▼──────────────────────────────────┐
 │                Infrastructure Layer                      │
-│     (MySQL Repositories, Midtrans, RajaOngkir)         │
+│     (MySQL Repositories, Midtrans)         │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -405,24 +396,6 @@ Midtrans Webhook → /payment/callback
 VerifyPaymentHandler → Update order status
        ↓
 Email konfirmasi dikirim
-```
-
----
-
-## 📦 Alur Cek Ongkir (RajaOngkir)
-
-```
-Pelanggan input alamat tujuan
-       ↓
-AJAX POST ke /shipping/check
-       ↓
-RajaOngkirService::getCost()
-       ↓
-Tampil pilihan kurir & biaya
-       ↓
-Pelanggan pilih kurir
-       ↓
-Total otomatis terupdate
 ```
 
 ---
@@ -523,7 +496,7 @@ Total otomatis terupdate
 - [ ] `src/Infrastructure/Persistence/MySQLCartRepository.php`
 - [ ] `src/Infrastructure/Persistence/MySQLReviewRepository.php`
 - [ ] `src/Infrastructure/Payment/MidtransService.php`
-- [ ] `src/Infrastructure/Shipping/RajaOngkirService.php`
+- [ ] `src/Infrastructure/Shipping/SimulatedShippingService.php`
 
 ### BATCH 6 — Controllers
 
@@ -574,7 +547,6 @@ Total otomatis terupdate
 | Icons        | Bootstrap Icons            |
 | Charts       | Chart.js (Admin Dashboard) |
 | Payment      | Midtrans Snap              |
-| Shipping     | RajaOngkir API             |
 | Architecture | CQRS + Clean Architecture  |
 
 ---

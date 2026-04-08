@@ -39,18 +39,16 @@
                                     placeholder="Nama jalan, nomor rumah, RT/RW, kelurahan..."><?= htmlspecialchars($user['address'] ?? '') ?></textarea>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Provinsi</label>
-                                <select name="province_id" id="province_select" class="form-select" required>
-                                    <option value="">-- Pilih Provinsi --</option>
-                                </select>
-                                <input type="hidden" name="province" id="province_name">
+                                <label class="form-label fw-semibold">Kota / Kabupaten</label>
+                                <input type="text" name="city_name" class="form-control"
+                                    value="<?= htmlspecialchars($user['city'] ?? '') ?>"
+                                    placeholder="Contoh: Kota Padang" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Kota / Kabupaten</label>
-                                <select name="city_id" id="city_select" class="form-select" required disabled>
-                                    <option value="">-- Pilih Kota --</option>
-                                </select>
-                                <input type="hidden" name="city_name" id="city_name">
+                                <label class="form-label fw-semibold">Provinsi</label>
+                                <input type="text" name="province" class="form-control"
+                                    value="<?= htmlspecialchars($user['province'] ?? '') ?>"
+                                    placeholder="Contoh: Sumatera Barat">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label fw-semibold">Kode Pos</label>
@@ -65,31 +63,30 @@
                 <div class="ka-card mb-4">
                     <div class="ka-card-header"><i class="bi bi-truck me-2"></i>Pilih Kurir & Layanan</div>
                     <div class="p-4">
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Kurir</label>
-                                <select name="courier_code" id="courier_select" class="form-select" required>
-                                    <option value="">-- Pilih Kurir --</option>
-                                    <?php foreach ($couriers as $c): ?>
-                                        <option value="<?= $c ?>"><?= strtoupper($c) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-md-6 d-flex align-items-end">
-                                <button type="button" id="cekOngkirBtn" class="btn ka-btn-primary w-100" disabled>
-                                    <i class="bi bi-calculator me-2"></i>Cek Ongkir
-                                </button>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Kurir</label>
+                            <select id="courier_select" class="form-select" required>
+                                <option value="">-- Pilih Kurir --</option>
+                                <?php foreach ($couriers as $c): ?>
+                                    <option value="<?= $c ?>"><?= strtoupper($c) ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
 
-                        <!-- Hasil ongkir -->
-                        <div id="ongkirResult" class="d-none">
+                        <!-- Pilihan layanan muncul setelah kurir dipilih -->
+                        <div id="serviceResult" class="d-none">
                             <label class="form-label fw-semibold">Pilih Layanan</label>
-                            <div id="ongkirOptions" class="d-flex flex-column gap-2"></div>
+                            <div id="serviceOptions" class="d-flex flex-column gap-2"></div>
                         </div>
+
                         <input type="hidden" name="courier" id="selected_courier">
                         <input type="hidden" name="courier_service" id="selected_service">
                         <input type="hidden" name="shipping_cost" id="selected_cost" value="0">
+
+                        <div class="mt-3">
+                            <small class="text-muted"><i class="bi bi-info-circle me-1"></i>
+                                Tarif pengiriman bersifat simulasi untuk keperluan pengujian.</small>
+                        </div>
                     </div>
                 </div>
 
@@ -136,7 +133,8 @@
                                 Rp <?= number_format($cart->subtotal(), 0, ',', '.') ?>
                             </span>
                         </div>
-                        <button type="submit" class="btn ka-btn-primary w-100 btn-lg fw-semibold" id="submitCheckout" disabled>
+                        <button type="submit" class="btn ka-btn-primary w-100 btn-lg fw-semibold"
+                            id="submitCheckout" disabled>
                             <i class="bi bi-lock me-2"></i>Lanjut ke Pembayaran
                         </button>
                     </div>
@@ -147,97 +145,107 @@
 </div>
 
 <script>
-    const APP_URL = '<?= APP_URL ?>';
     const subtotal = <?= $cart->subtotal() ?>;
-    const cartWeight = <?= array_sum(array_map(fn($i) => ($i->productWeight ?? 100) * $i->qty, $cart->items)) ?>;
 
-    // Load provinsi
-    fetch(APP_URL + '/public/js/provinces.json')
-        .then(r => r.ok ? r.json() : null)
-        .catch(() => null)
-        .then(data => {
-            // Fallback: load dari RajaOngkir via AJAX jika ada
+    // Data layanan kurir (simulasi — tidak memanggil API eksternal)
+    const COURIER_SERVICES = {
+        jne: [{
+                service: 'OKE',
+                description: 'Ongkos Kirim Ekonomis',
+                cost: 10000,
+                etd: '4-5'
+            },
+            {
+                service: 'REG',
+                description: 'Reguler',
+                cost: 15000,
+                etd: '2-3'
+            },
+            {
+                service: 'YES',
+                description: 'Yakin Esok Sampai',
+                cost: 35000,
+                etd: '1'
+            },
+        ],
+        jnt: [{
+                service: 'EZ',
+                description: 'Reguler',
+                cost: 12000,
+                etd: '2-3'
+            },
+            {
+                service: 'EXPRESS',
+                description: 'Express',
+                cost: 28000,
+                etd: '1'
+            },
+        ],
+        sicepat: [{
+                service: 'HALU',
+                description: 'Hemat',
+                cost: 9000,
+                etd: '4-5'
+            },
+            {
+                service: 'BEST',
+                description: 'Reguler',
+                cost: 14000,
+                etd: '2-3'
+            },
+            {
+                service: 'GOKIL',
+                description: 'Express',
+                cost: 30000,
+                etd: '1'
+            },
+        ],
+    };
+
+    document.getElementById('courier_select').addEventListener('change', function() {
+        const courier = this.value;
+        const services = COURIER_SERVICES[courier] ?? [];
+        const wrap = document.getElementById('serviceOptions');
+        const result = document.getElementById('serviceResult');
+
+        // Reset pilihan sebelumnya
+        document.getElementById('selected_courier').value = '';
+        document.getElementById('selected_service').value = '';
+        document.getElementById('selected_cost').value = '0';
+        document.getElementById('ongkir-display').textContent = '—';
+        document.getElementById('total-display').textContent =
+            'Rp ' + subtotal.toLocaleString('id-ID');
+        document.getElementById('submitCheckout').disabled = true;
+
+        if (!courier || !services.length) {
+            result.classList.add('d-none');
+            return;
+        }
+
+        wrap.innerHTML = '';
+        services.forEach(s => {
+            wrap.innerHTML += `
+            <label class="ka-ongkir-option" style="cursor:pointer">
+                <input type="radio" name="ongkir_radio" value="${s.cost}"
+                       onchange="selectService('${courier}', '${s.service}', ${s.cost})">
+                <div class="ka-ongkir-detail">
+                    <span class="fw-semibold">${courier.toUpperCase()} ${s.service}</span>
+                    <span class="text-muted small">${s.description} &middot; Estimasi ${s.etd} hari</span>
+                </div>
+                <span class="fw-bold ka-text-primary">Rp ${s.cost.toLocaleString('id-ID')}</span>
+            </label>`;
         });
-
-    document.getElementById('province_select').addEventListener('change', function() {
-        const provId = this.value;
-        const provName = this.options[this.selectedIndex].text;
-        document.getElementById('province_name').value = provName;
-        const citySelect = document.getElementById('city_select');
-        citySelect.innerHTML = '<option>Memuat kota...</option>';
-        citySelect.disabled = true;
-
-        fetch(APP_URL + '/public/js/cities.json')
-            .then(r => r.json())
-            .then(cities => {
-                const filtered = cities.filter(c => c.province_id == provId);
-                citySelect.innerHTML = '<option value="">-- Pilih Kota --</option>';
-                filtered.forEach(c => {
-                    citySelect.innerHTML += `<option value="${c.city_id}">${c.type} ${c.city_name}</option>`;
-                });
-                citySelect.disabled = false;
-                checkCekBtn();
-            });
+        result.classList.remove('d-none');
     });
 
-    document.getElementById('city_select').addEventListener('change', function() {
-        document.getElementById('city_name').value = this.options[this.selectedIndex].text;
-        checkCekBtn();
-    });
-
-    document.getElementById('courier_select').addEventListener('change', checkCekBtn);
-
-    function checkCekBtn() {
-        const city = document.getElementById('city_select').value;
-        const courier = document.getElementById('courier_select').value;
-        document.getElementById('cekOngkirBtn').disabled = !(city && courier);
-    }
-
-    document.getElementById('cekOngkirBtn').addEventListener('click', function() {
-        const cityId = document.getElementById('city_select').value;
-        const courier = document.getElementById('courier_select').value;
-        this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menghitung...';
-        this.disabled = true;
-
-        fetch(APP_URL + '/shipping/check', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `city_id=${cityId}&weight=${cartWeight}&courier=${courier}`
-            })
-            .then(r => r.json())
-            .then(res => {
-                this.innerHTML = '<i class="bi bi-calculator me-2"></i>Cek Ongkir';
-                this.disabled = false;
-                if (res.success && res.data.length) {
-                    const wrap = document.getElementById('ongkirOptions');
-                    wrap.innerHTML = '';
-                    res.data.forEach(s => {
-                        wrap.innerHTML += `
-          <label class="ka-ongkir-option">
-            <input type="radio" name="ongkir_radio" value="${s.cost}"
-                   data-service="${s.service}" onchange="selectOngkir(this, '${courier}', '${s.service}', ${s.cost})">
-            <div class="ka-ongkir-detail">
-              <span class="fw-semibold">${s.service}</span>
-              <span class="text-muted small">${s.description} · Estimasi ${s.etd} hari</span>
-            </div>
-            <span class="fw-bold ka-text-primary">Rp ${s.cost.toLocaleString('id-ID')}</span>
-          </label>`;
-                    });
-                    document.getElementById('ongkirResult').classList.remove('d-none');
-                } else {
-                    alert('Gagal mendapatkan ongkir. Periksa kota tujuan.');
-                }
-            });
-    });
-
-    function selectOngkir(el, courier, service, cost) {
+    function selectService(courier, service, cost) {
         document.getElementById('selected_courier').value = courier;
         document.getElementById('selected_service').value = service;
         document.getElementById('selected_cost').value = cost;
-        document.getElementById('ongkir-display').textContent = 'Rp ' + cost.toLocaleString('id-ID');
-        document.getElementById('total-display').textContent = 'Rp ' + (subtotal + cost).toLocaleString('id-ID');
+        document.getElementById('ongkir-display').textContent =
+            'Rp ' + cost.toLocaleString('id-ID');
+        document.getElementById('total-display').textContent =
+            'Rp ' + (subtotal + cost).toLocaleString('id-ID');
         document.getElementById('submitCheckout').disabled = false;
     }
 </script>

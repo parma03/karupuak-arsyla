@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use Core\{Request, Response};
-use Infrastructure\Shipping\RajaOngkirService;
+use Infrastructure\Shipping\SimulatedShippingService;
 
 class ShippingController
 {
@@ -16,28 +16,25 @@ class ShippingController
         $this->res = new Response();
     }
 
-    /** AJAX: hitung ongkir */
+    /**
+     * AJAX: kembalikan daftar layanan & tarif simulasi berdasarkan kurir.
+     * Tidak memanggil API eksternal — cocok untuk simulasi skripsi.
+     */
     public function check(): void
     {
-        $destinationCity = (int)$this->req->post('city_id');
-        $weight          = max(1, (int)$this->req->post('weight'));
-        $courier         = strtolower(trim($this->req->post('courier', 'jne')));
+        $courier = strtolower(trim($this->req->post('courier', '')));
 
-        if (!$destinationCity) {
-            $this->res->json(['success' => false, 'message' => 'Kota tujuan wajib dipilih.']);
+        if (!$courier) {
+            $this->res->json(['success' => false, 'message' => 'Kurir wajib dipilih.']);
         }
 
-        try {
-            $service  = new RajaOngkirService();
-            $costs    = $service->getCost(
-                (int)STORE_CITY_ID,
-                $destinationCity,
-                $weight,
-                $courier
-            );
-            $this->res->json(['success' => true, 'data' => $costs]);
-        } catch (\Exception $e) {
-            $this->res->json(['success' => false, 'message' => 'Gagal mendapatkan ongkir: ' . $e->getMessage()]);
+        $service  = new SimulatedShippingService();
+        $services = $service->getServices($courier);
+
+        if (empty($services)) {
+            $this->res->json(['success' => false, 'message' => 'Kurir tidak dikenali.']);
         }
+
+        $this->res->json(['success' => true, 'data' => $services]);
     }
 }

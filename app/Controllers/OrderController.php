@@ -7,7 +7,6 @@ use Application\Commands\Order\{CreateOrderCommand, CreateOrderHandler};
 use Application\Queries\Cart\{GetCartQuery, GetCartHandler};
 use Application\Queries\Order\{GetOrderListQuery, GetOrderListHandler, GetOrderDetailQuery, GetOrderDetailHandler};
 use Infrastructure\Persistence\MySQLCartRepository;
-use Infrastructure\Shipping\RajaOngkirService;
 
 class OrderController
 {
@@ -43,7 +42,7 @@ class OrderController
             'cart'      => $cart,
             'cartCount' => $cartCount,
             'user'      => $user,
-            'couriers'  => ['jne', 'pos', 'tiki'],
+            'couriers'  => ['jne', 'jnt', 'sicepat'],
         ]);
     }
 
@@ -56,9 +55,8 @@ class OrderController
             'name'            => $this->req->post('name'),
             'phone'           => $this->req->post('phone'),
             'address'         => $this->req->post('address'),
-            'city_id'         => $this->req->post('city_id'),
             'city_name'       => $this->req->post('city_name'),
-            'province'        => $this->req->post('province'),
+            'province'        => $this->req->post('province') ?: 'Simulasi',
             'postal_code'     => $this->req->post('postal_code'),
             'courier'         => $this->req->post('courier'),
             'courier_service' => $this->req->post('courier_service'),
@@ -70,7 +68,7 @@ class OrderController
             'name'            => 'required|min:2',
             'phone'           => 'required|min:10',
             'address'         => 'required|min:10',
-            'city_id'         => 'required|numeric',
+            'city_name'       => 'required',
             'courier'         => 'required',
             'courier_service' => 'required',
             'shipping_cost'   => 'required|numeric',
@@ -85,10 +83,10 @@ class OrderController
                 name: $data['name'],
                 phone: $data['phone'],
                 address: $data['address'],
-                cityId: (int)$data['city_id'],
+                cityId: 0,
                 cityName: $data['city_name'],
                 province: $data['province'],
-                postalCode: $data['postal_code'],
+                postalCode: $data['postal_code'] ?: '',
                 courier: $data['courier'],
                 courierService: $data['courier_service'],
                 shippingCost: (float)$data['shipping_cost'],

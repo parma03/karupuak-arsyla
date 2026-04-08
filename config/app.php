@@ -37,11 +37,6 @@ define('UPLOAD_URL',      APP_URL . '/public/uploads/products/');
 define('MAX_UPLOAD_SIZE', 5 * 1024 * 1024); // 5 MB
 define('ALLOWED_TYPES',   ['image/jpeg', 'image/png', 'image/webp']);
 
-// RajaOngkir
-define('RAJAONGKIR_API_KEY', 'ISI_API_KEY_RAJAONGKIR_ANDA');
-define('RAJAONGKIR_BASE_URL', 'https://api.rajaongkir.com/starter');
-define('STORE_CITY_ID',      '432'); // ID kota toko (sesuaikan)
-
 // Pagination
 define('ITEMS_PER_PAGE', 12);
 

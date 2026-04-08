@@ -2,8 +2,8 @@
 // config/midtrans.php
 
 // Ambil dari: https://dashboard.sandbox.midtrans.com/settings/config_info
-define('MIDTRANS_SERVER_KEY',    'SB-Mid-server-GANTI_DENGAN_KEY_ANDA');
-define('MIDTRANS_CLIENT_KEY',    'SB-Mid-client-GANTI_DENGAN_KEY_ANDA');
+define('MIDTRANS_SERVER_KEY',    'SB-Mid-server-yZbU_u1NCKEyGDsZs_UVEmzn');
+define('MIDTRANS_CLIENT_KEY',    'SB-Mid-client-qz4dsSPdnxp1Ztqd');
 define('MIDTRANS_IS_PRODUCTION', false); // true = live, false = sandbox
 
 define(
