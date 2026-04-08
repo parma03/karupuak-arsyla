@@ -8,9 +8,9 @@ USE `karupuak_arsyla`;
 -- ── USERS ──────────────────────────────────────────────────
 -- Password: admin123  → hash bcrypt
 INSERT INTO `users` (`name`, `email`, `password`, `phone`, `role`) VALUES
-('Administrator',   'admin@arsyla.com', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '081234567890', 'admin'),
-('Pemilik Toko',    'owner@arsyla.com', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '081234567891', 'owner'),
-('Demo Customer',   'demo@arsyla.com',  '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '081234567892', 'customer');
+('Administrator',   'admin@arsyla.com', '$2y$10$WJ6xQZ8X2CHMjjYNi1pMGeNA2GjDcwNT/x6FK1RZW4ngmXWkxBK2e', '081234567890', 'admin'),
+('Pemilik Toko',    'owner@arsyla.com', '$2y$10$B8ra/rGIuGMNHfR5GlHeoOspiFGgR1e95nbTO5kdN18cxVGWi3iY.', '081234567891', 'owner'),
+('Demo Customer',   'demo@arsyla.com',  '$2y$10$bj2IMjK4KYLMcJdO7CRXCO/F4ab3y.WFBq23Smdgp7WgqG8Ky5GXO', '081234567892', 'customer');
 -- NOTE: Password di atas adalah hash dari 'admin123' / 'owner123' / 'demo123'
 -- Semua sama: 'password' (contoh hash dari Laravel default)
 -- Ganti dengan hash real jika diperlukan
