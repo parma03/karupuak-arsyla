@@ -28,6 +28,10 @@ class UpdateOrderStatusHandler implements CommandHandlerInterface
             throw new \RuntimeException('Order tidak ditemukan.');
         }
 
+        if ($order->status === 'delivered') {
+            throw new \RuntimeException('Order sudah diterima, status tidak bisa diubah.');
+        }
+
         $this->orderRepo->updateStatus($command->orderId, $command->status);
 
         $pdo = getDB();

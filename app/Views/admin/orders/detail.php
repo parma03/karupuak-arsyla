@@ -42,31 +42,39 @@
         <!-- Update status -->
         <div class="ka-card">
             <div class="ka-card-header fw-semibold"><i class="bi bi-arrow-repeat me-2"></i>Update Status</div>
-            <form method="POST" action="<?= APP_URL ?>/admin/orders/<?= $order->id ?>/status" class="p-4">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Status Pesanan</label>
-                        <select name="status" class="form-select" required>
-                            <?php foreach (['pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled'] as $s): ?>
-                                <option value="<?= $s ?>" <?= $order->status === $s ? 'selected' : '' ?>><?= ucfirst($s) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">No. Resi (jika dikirim)</label>
-                        <input type="text" name="tracking_number" class="form-control"
-                            value="<?= htmlspecialchars($shipment['tracking_number'] ?? '') ?>"
-                            placeholder="Contoh: JNE123456789">
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-semibold">Catatan</label>
-                        <input type="text" name="notes" class="form-control" placeholder="Catatan untuk status ini (opsional)">
+            <?php if ($order->status === 'delivered'): ?>
+                <div class="p-4">
+                    <div class="alert alert-info mb-0">
+                        Pesanan sudah diterima, status tidak dapat diubah lagi.
                     </div>
                 </div>
-                <button type="submit" class="btn ka-btn-primary mt-3">
-                    <i class="bi bi-check-lg me-2"></i>Update Status
-                </button>
-            </form>
+            <?php else: ?>
+                <form method="POST" action="<?= APP_URL ?>/admin/orders/<?= $order->id ?>/status" class="p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Status Pesanan</label>
+                            <select name="status" class="form-select" required>
+                                <?php foreach (['pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled'] as $s): ?>
+                                    <option value="<?= $s ?>" <?= $order->status === $s ? 'selected' : '' ?>><?= ucfirst($s) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">No. Resi (jika dikirim)</label>
+                            <input type="text" name="tracking_number" class="form-control"
+                                value="<?= htmlspecialchars($shipment['tracking_number'] ?? '') ?>"
+                                placeholder="Contoh: JNE123456789">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Catatan</label>
+                            <input type="text" name="notes" class="form-control" placeholder="Catatan untuk status ini (opsional)">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn ka-btn-primary mt-3">
+                        <i class="bi bi-check-lg me-2"></i>Update Status
+                    </button>
+                </form>
+            <?php endif; ?>
         </div>
     </div>
 
