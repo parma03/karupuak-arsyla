@@ -8,8 +8,17 @@ define('APP_VERSION', '1.0.0');
 // Bekerja di path manapun: localhost/, localhost/karupuak-arsyla/,
 // localhost/kaknani/karupuak-arsyla/, dsb. tanpa perlu diubah manual.
 (function () {
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        ? 'https' : 'http';
+    // Deteksi protokol: dukung reverse proxy / ngrok (X-Forwarded-Proto)
+    $forwardedProto = $_SERVER['HTTP_X_FORWARDED_PROTO']
+        ?? $_SERVER['HTTP_X_FORWARDED_SCHEME']
+        ?? '';
+    if (strtolower($forwardedProto) === 'https') {
+        $protocol = 'https';
+    } elseif (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        $protocol = 'https';
+    } else {
+        $protocol = 'http';
+    }
     $host     = $_SERVER['HTTP_HOST'] ?? 'localhost';
 
     // SCRIPT_NAME = /kaknani/karupuak-arsyla/index.php  →  dirname = /kaknani/karupuak-arsyla

@@ -41,10 +41,14 @@
                             <span class="badge bg-<?= $sc ?>"><?= ucfirst(str_replace('_', ' ', $s['status'])) ?></span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-primary"
-                                onclick="openShipModal(<?= $s['order_id'] ?>, '<?= addslashes($s['tracking_number'] ?? '') ?>')">
-                                <i class="bi bi-pencil"></i> Update
-                            </button>
+                            <?php if ($s['status'] === 'delivered'): ?>
+                                <span class="text-muted small">Sudah diterima</span>
+                            <?php else: ?>
+                                <button class="btn btn-sm btn-outline-primary"
+                                    onclick="openShipModal(<?= $s['order_id'] ?>, '<?= addslashes($s['tracking_number'] ?? '') ?>')">
+                                    <i class="bi bi-pencil"></i> Update
+                                </button>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

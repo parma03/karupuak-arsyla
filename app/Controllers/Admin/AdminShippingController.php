@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use Core\{Request, Response, Middleware};
 use Application\Commands\Order\{UpdateOrderStatusCommand, UpdateOrderStatusHandler};
+use Infrastructure\Persistence\MySQLOrderRepository;
 
 class AdminShippingController
 {
@@ -41,6 +42,19 @@ class AdminShippingController
     public function update(string $id): void
     {
         // $id = order_id
+        $order = (new MySQLOrderRepository())->findById((int)$id);
+        if (!$order) {
+            $this->res->setFlash('danger', 'Order tidak ditemukan.');
+            $this->res->redirect('admin/shipping');
+            return;
+        }
+
+        if ($order->status === 'delivered') {
+            $this->res->setFlash('danger', 'Status pengiriman sudah diterima, tidak bisa diubah.');
+            $this->res->redirect('admin/shipping');
+            return;
+        }
+
         try {
             (new UpdateOrderStatusHandler())->handle(new UpdateOrderStatusCommand(
                 orderId: (int)$id,
