@@ -21,13 +21,18 @@ class MySQLProductRepository implements ProductRepositoryInterface
             ? $filters['sort_by'] : 'created_at';
         $sortDir = strtoupper($filters['sort_dir'] ?? 'DESC') === 'ASC' ? 'ASC' : 'DESC';
         $offset  = ($page - 1) * $perPage;
+        $orderBy = $sortBy === 'rating_avg'
+            ? 'CASE WHEN p.sold_count >= 500 THEN 5 WHEN p.sold_count >= 100 THEN 4 '
+                . 'WHEN p.sold_count >= 50 THEN 3 WHEN p.sold_count >= 10 THEN 2 '
+                . 'WHEN p.sold_count > 0 THEN 1 ELSE 0 END'
+            : 'p.' . $sortBy;
 
         $sql = "
             SELECT p.*, c.name AS category_name
             FROM products p
             LEFT JOIN categories c ON c.id = p.category_id
             $where
-            ORDER BY p.$sortBy $sortDir
+            ORDER BY $orderBy $sortDir
             LIMIT :limit OFFSET :offset
         ";
 

@@ -37,6 +37,23 @@ class Product
         return $this->stock > 0;
     }
 
+    public function automaticRating(): int
+    {
+        if ($this->soldCount >= 500) {
+            return 5;
+        }
+        if ($this->soldCount >= 100) {
+            return 4;
+        }
+        if ($this->soldCount >= 50) {
+            return 3;
+        }
+        if ($this->soldCount >= 10) {
+            return 2;
+        }
+        return $this->soldCount > 0 ? 1 : 0;
+    }
+
     public function imageUrl(): string
     {
         if ($this->image) {

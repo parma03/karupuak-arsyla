@@ -34,20 +34,16 @@
                 <?= htmlspecialchars($product->name) ?>
             </h1>
 
-            <!-- Rating -->
-            <?php if ($product->ratingCount > 0): ?>
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <div class="d-flex">
-                        <?php for ($i = 1; $i <= 5; $i++): ?>
-                            <i class="bi bi-star<?= $i <= round($product->ratingAvg) ? '-fill' : ($i - 0.5 <= $product->ratingAvg ? '-half' : '') ?> text-warning"></i>
-                        <?php endfor; ?>
-                    </div>
-                    <span class="fw-semibold"><?= number_format($product->ratingAvg, 1) ?></span>
-                    <span class="text-muted">(<?= $product->ratingCount ?> ulasan)</span>
-                    <span class="text-muted">·</span>
-                    <span class="text-muted"><?= $product->soldCount ?> terjual</span>
+            <!-- Rating otomatis berdasarkan jumlah terjual -->
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="d-flex">
+                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <i class="bi bi-star<?= $i <= $product->automaticRating() ? '-fill' : '' ?> text-warning"></i>
+                    <?php endfor; ?>
                 </div>
-            <?php endif; ?>
+                <span class="fw-semibold"><?= number_format($product->automaticRating(), 1) ?></span>
+                <span class="text-muted">(<?= $product->soldCount ?> terjual)</span>
+            </div>
 
             <!-- Harga -->
             <div class="d-flex align-items-baseline gap-3 mb-3">

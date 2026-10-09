@@ -113,7 +113,7 @@
                 <select name="sort" class="form-select form-select-sm ka-sort-select" onchange="this.form.submit()">
                     <option value="created_at" <?= ($pagination['page'] ?? '') ? '' : 'selected' ?>>Terbaru</option>
                     <option value="price" <?= isset($_GET['sort']) && $_GET['sort'] === 'price' ? 'selected' : '' ?>>Harga Terendah</option>
-                    <option value="rating_avg" <?= isset($_GET['sort']) && $_GET['sort'] === 'rating_avg' ? 'selected' : '' ?>>Rating Tertinggi</option>
+                    <option value="rating_avg" <?= isset($_GET['sort']) && $_GET['sort'] === 'rating_avg' ? 'selected' : '' ?>>Rating Otomatis Tertinggi</option>
                     <option value="sold_count" <?= isset($_GET['sort']) && $_GET['sort'] === 'sold_count' ? 'selected' : '' ?>>Terlaris</option>
                 </select>
             </form>

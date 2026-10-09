@@ -17,15 +17,15 @@
                 <a href="<?= APP_URL ?>/product/<?= $p->id ?>"><?= htmlspecialchars($p->name) ?></a>
             </h6>
 
-            <!-- Rating -->
-            <?php if ($p->ratingCount > 0): ?>
-                <div class="ka-product-rating">
-                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                        <i class="bi bi-star<?= $i <= round($p->ratingAvg) ? '-fill' : '' ?> text-warning" style="font-size:11px"></i>
-                    <?php endfor; ?>
-                    <span class="ms-1 text-muted" style="font-size:11px">(<?= $p->ratingCount ?>)</span>
-                </div>
-            <?php endif; ?>
+            <!-- Rating otomatis berdasarkan jumlah terjual -->
+            <div class="ka-product-rating">
+                <?php for ($i = 1; $i <= 5; $i++): ?>
+                    <i class="bi bi-star<?= $i <= $p->automaticRating() ? '-fill' : '' ?> text-warning" style="font-size:11px"></i>
+                <?php endfor; ?>
+                <span class="ms-1 text-muted" style="font-size:11px">
+                    (<?= $p->automaticRating() ?>,0 · <?= $p->soldCount ?> terjual)
+                </span>
+            </div>
 
             <!-- Harga -->
             <div class="ka-product-price mt-2">

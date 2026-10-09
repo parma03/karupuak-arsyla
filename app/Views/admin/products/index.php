@@ -75,8 +75,12 @@
                             </span>
                         </td>
                         <td>
-                            <i class="bi bi-star-fill text-warning"></i> <?= number_format($p->ratingAvg, 1) ?>
-                            <span class="text-muted small">(<?= $p->ratingCount ?>)</span>
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                <i class="bi bi-star<?= $i <= $p->automaticRating() ? '-fill' : '' ?> text-warning"></i>
+                            <?php endfor; ?>
+                            <div class="text-muted small">
+                                <?= number_format($p->automaticRating(), 1) ?> · <?= $p->soldCount ?> terjual
+                            </div>
                         </td>
                         <td>
                             <span class="badge bg-<?= $p->isActive ? 'success' : 'secondary' ?>">
