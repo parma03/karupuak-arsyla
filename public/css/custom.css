@@ -38,8 +38,19 @@ a {
   font-size: 1.4rem;
   color: #fff;
 }
+.ka-product-icon {
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+  object-position: center;
+}
 .ka-logo-icon {
-  font-size: 1.6rem;
+  width: 36px;
+  height: 30px;
+}
+.ka-footer-icon {
+  width: 44px;
+  height: 38px;
 }
 .ka-search-form {
   max-width: 420px;
@@ -154,6 +165,7 @@ a {
   bottom: 8px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.65rem;
+  text-align: right;
 }
 .ka-hero-image-credit a {
   color: inherit;
@@ -219,12 +231,13 @@ a {
     rgba(180, 120, 60, 0.05)
   );
 }
-.ka-hero-emoji-float {
+.ka-hero-product-icon {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 7rem;
+  width: 150px;
+  height: 120px;
   animation: float 3s ease-in-out infinite;
 }
 .ka-hero-emoji-float2 {
@@ -479,7 +492,12 @@ a {
   justify-content: center;
 }
 .ka-auth-logo {
-  font-size: 4rem;
+  width: 92px;
+  height: 76px;
+}
+.ka-admin-logo {
+  width: 42px;
+  height: 36px;
 }
 .ka-auth-tagline {
   font-family: "Playfair Display", serif;

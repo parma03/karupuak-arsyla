@@ -17,7 +17,7 @@
         <!-- Decorative side -->
         <div class="ka-auth-side d-none d-lg-flex">
             <div class="ka-auth-side-content">
-                <div class="ka-auth-logo mb-4">🥨</div>
+                <img class="ka-product-icon ka-auth-logo mb-4" src="<?= APP_URL ?>/public/img/kerupuk-piece.png" alt="">
                 <h2 class="ka-auth-tagline">Karupuak Kulit<br><span>Arsyla</span></h2>
                 <p class="ka-auth-desc">Kerupuk Kulit sapi premium khas Minangkabau. Gurih, renyah, dan selalu bikin nagih.</p>
                 <div class="ka-auth-badges mt-4 d-flex gap-3">

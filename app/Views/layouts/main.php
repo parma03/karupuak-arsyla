@@ -19,7 +19,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark ka-navbar sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="<?= APP_URL ?>">
-                <span class="ka-logo-icon">🥨</span>
+                <img class="ka-product-icon ka-logo-icon" src="<?= APP_URL ?>/public/img/kerupuk-piece.png" alt="">
                 <span class="ka-brand-text">Arsyla</span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
@@ -100,7 +100,7 @@
             <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <span style="font-size:2rem">🥨</span>
+                        <img class="ka-product-icon ka-footer-icon" src="<?= APP_URL ?>/public/img/kerupuk-piece.png" alt="">
                         <span class="ka-brand-text text-white fs-4">Arsyla</span>
                     </div>
                     <p class="text-white-50 small">Kerupuk Kulit sapi premium khas Minangkabau. Dibuat dengan bahan pilihan, digoreng dengan cinta.</p>

@@ -1,4 +1,4 @@
-# 🥨 KARUPUAK Kulit ARSYLA — E-Commerce Platform
+# KARUPUAK Kulit ARSYLA — E-Commerce Platform
 
 > Platform e-commerce kerupuk Kulit premium dengan arsitektur **CQRS + Clean Architecture**, dibangun menggunakan **PHP Native**, **Bootstrap 5**, dan **Midtrans Payment Gateway**.
 

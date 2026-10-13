@@ -36,7 +36,8 @@
             <div class="col-lg-6 d-none d-lg-flex justify-content-center">
                 <div class="ka-hero-image-wrap">
                     <div class="ka-hero-blob"></div>
-                    <div class="ka-hero-emoji-float">🥨</div>
+                    <img class="ka-product-icon ka-hero-product-icon" src="<?= APP_URL ?>/public/img/kerupuk-piece.png"
+                        alt="Potongan kerupuk kulit">
                     <div class="ka-hero-emoji-float2">✨</div>
                 </div>
             </div>

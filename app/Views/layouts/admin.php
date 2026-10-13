@@ -17,7 +17,7 @@
     <!-- Sidebar -->
     <div class="ka-sidebar" id="sidebar">
         <div class="ka-sidebar-brand">
-            <span class="fs-2">🥨</span>
+            <img class="ka-product-icon ka-admin-logo" src="<?= APP_URL ?>/public/img/kerupuk-piece.png" alt="">
             <span class="ka-sidebar-title">Arsyla</span>
             <span class="ka-sidebar-sub">Admin Panel</span>
         </div>
