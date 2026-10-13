@@ -5,8 +5,8 @@
     <div class="container">
         <div class="row align-items-center min-vh-60">
             <div class="col-lg-6">
-                <span class="ka-hero-badge mb-3 d-inline-block">🏆 Kerupuk Jangek #1 Minangkabau</span>
-                <h1 class="ka-hero-title">Karupuak<br><span class="ka-hero-accent">Jangek Arsyla</span></h1>
+                <span class="ka-hero-badge mb-3 d-inline-block">🏆 Kerupuk Kulit #1 Minangkabau</span>
+                <h1 class="ka-hero-title">Karupuak<br><span class="ka-hero-accent">Kulit Arsyla</span></h1>
                 <p class="ka-hero-desc">Kerupuk kulit sapi premium, digoreng dengan minyak kelapa murni. Renyah sempurna, gurih tiada duanya — langsung dari dapur Minang ke meja makan Anda.</p>
                 <div class="d-flex gap-3 flex-wrap mt-4">
                     <a href="#katalog" class="btn ka-btn-primary btn-lg px-4">

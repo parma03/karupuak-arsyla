@@ -44,7 +44,7 @@ class HomeController
             : 0;
 
         $this->res->render('home.index', [
-            'title'       => 'Karupuak Jangek Arsyla — Kerupuk Premium Minang',
+            'title'       => 'Karupuak Kulit Arsyla — Kerupuk Premium Minang',
             'categories'  => $categories,
             'products'    => $result['data'],
             'pagination'  => $result,

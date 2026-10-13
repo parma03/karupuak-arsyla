@@ -103,7 +103,7 @@
                         <span style="font-size:2rem">🥨</span>
                         <span class="ka-brand-text text-white fs-4">Arsyla</span>
                     </div>
-                    <p class="text-white-50 small">Kerupuk jangek sapi premium khas Minangkabau. Dibuat dengan bahan pilihan, digoreng dengan cinta.</p>
+                    <p class="text-white-50 small">Kerupuk Kulit sapi premium khas Minangkabau. Dibuat dengan bahan pilihan, digoreng dengan cinta.</p>
                     <div class="d-flex gap-3 mt-3">
                         <a href="#" class="ka-social-link"><i class="bi bi-instagram"></i></a>
                         <a href="#" class="ka-social-link"><i class="bi bi-facebook"></i></a>
@@ -141,7 +141,7 @@
                 </div>
             </div>
             <hr class="border-secondary mt-4">
-            <p class="text-center text-white-50 small mb-0">© <?= date('Y') ?> Karupuak Jangek Arsyla. Semua hak dilindungi.</p>
+            <p class="text-center text-white-50 small mb-0">© <?= date('Y') ?> Karupuak Kulit Arsyla. Semua hak dilindungi.</p>
         </div>
     </footer>
 

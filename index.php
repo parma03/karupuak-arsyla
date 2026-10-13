@@ -1,7 +1,7 @@
 <?php
 
 /**
- * KARUPUAK JANGEK ARSYLA — E-Commerce Platform
+ * KARUPUAK Kulit ARSYLA — E-Commerce Platform
  * Entry Point (Front Controller)
  *
  * URL: http://localhost/karupuak-arsyla/

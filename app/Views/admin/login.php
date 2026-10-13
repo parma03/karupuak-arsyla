@@ -2,7 +2,7 @@
 <div class="text-center mb-4">
     <div style="font-size:3rem">🔐</div>
     <h3 class="fw-bold mt-2">Admin Panel</h3>
-    <p class="text-muted">Karupuak Jangek Arsyla</p>
+    <p class="text-muted">Karupuak Kulit Arsyla</p>
 </div>
 
 <?php if (!empty($error)): ?>

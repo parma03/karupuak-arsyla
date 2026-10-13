@@ -1,4 +1,4 @@
-/* public/js/payment.js — KARUPUAK JANGEK ARSYLA */
+/* public/js/payment.js — KARUPUAK Kulit ARSYLA */
 
 /**
  * Utility untuk halaman payment — digunakan bersama Midtrans Snap.js

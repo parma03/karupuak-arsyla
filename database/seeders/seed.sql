@@ -1,5 +1,5 @@
 -- ============================================================
--- KARUPUAK JANGEK ARSYLA — Seeder (Data Awal)
+-- KARUPUAK Kulit ARSYLA — Seeder (Data Awal)
 -- Jalankan SETELAH create_tables.sql
 -- ============================================================
 
@@ -17,54 +17,54 @@ INSERT INTO `users` (`name`, `email`, `password`, `phone`, `role`) VALUES
 
 -- ── CATEGORIES ─────────────────────────────────────────────
 INSERT INTO `categories` (`name`, `slug`, `description`, `sort_order`) VALUES
-('Karupuak Original',   'karupuak-original',   'Kerupuk jangek sapi dengan rasa original gurih', 1),
-('Karupuak Pedas',      'karupuak-pedas',      'Kerupuk jangek dengan bumbu pedas level 1-5',   2),
-('Karupuak Balado',     'karupuak-balado',     'Kerupuk jangek dengan bumbu balado Padang asli', 3),
-('Karupuak Barbeque',   'karupuak-barbeque',   'Kerupuk jangek rasa barbeque smoky',            4),
-('Paket Hampers',       'paket-hampers',       'Paket gift box karupuak jangek premium',        5);
+('Karupuak Original',   'karupuak-original',   'Kerupuk Kulit sapi dengan rasa original gurih', 1),
+('Karupuak Pedas',      'karupuak-pedas',      'Kerupuk Kulit dengan bumbu pedas level 1-5',   2),
+('Karupuak Balado',     'karupuak-balado',     'Kerupuk Kulit dengan bumbu balado Padang asli', 3),
+('Karupuak Barbeque',   'karupuak-barbeque',   'Kerupuk Kulit rasa barbeque smoky',            4),
+('Paket Hampers',       'paket-hampers',       'Paket gift box karupuak Kulit premium',        5);
 
 -- ── PRODUCTS ───────────────────────────────────────────────
 INSERT INTO `products`
   (`category_id`,`name`,`slug`,`description`,`price`,`price_sale`,`stock`,`weight`,`is_active`,`is_featured`,`rating_avg`,`rating_count`)
 VALUES
 -- Kategori 1: Original
-(1, 'Karupuak Jangek Original 100gr',    'karupuak-jangek-original-100gr',
- 'Kerupuk jangek sapi berkualitas premium, digoreng dengan minyak kelapa murni. Renyah, gurih, dan tahan lama. Cocok sebagai camilan atau pelengkap makan.',
+(1, 'Karupuak Kulit Original 100gr',    'karupuak-Kulit-original-100gr',
+ 'Kerupuk Kulit sapi berkualitas premium, digoreng dengan minyak kelapa murni. Renyah, gurih, dan tahan lama. Cocok sebagai camilan atau pelengkap makan.',
  25000, NULL, 100, 100, 1, 1, 4.8, 24),
 
-(1, 'Karupuak Jangek Original 250gr',    'karupuak-jangek-original-250gr',
- 'Versi ekonomis karupuak jangek original dalam kemasan 250 gram. Ideal untuk keluarga.',
+(1, 'Karupuak Kulit Original 250gr',    'karupuak-Kulit-original-250gr',
+ 'Versi ekonomis karupuak Kulit original dalam kemasan 250 gram. Ideal untuk keluarga.',
  55000, 50000, 80, 250, 1, 0, 4.7, 18),
 
-(1, 'Karupuak Jangek Original 500gr',    'karupuak-jangek-original-500gr',
- 'Kemasan besar 500 gram karupuak jangek original. Hemat dan bisa tahan lama.',
+(1, 'Karupuak Kulit Original 500gr',    'karupuak-Kulit-original-500gr',
+ 'Kemasan besar 500 gram karupuak Kulit original. Hemat dan bisa tahan lama.',
  100000, 90000, 50, 500, 1, 1, 4.9, 31),
 
 -- Kategori 2: Pedas
-(2, 'Karupuak Jangek Pedas Level 1',     'karupuak-jangek-pedas-l1',
- 'Karupuak jangek dengan tambahan cabai merah pilihan. Level pedas ringan, cocok untuk semua usia.',
+(2, 'Karupuak Kulit Pedas Level 1',     'karupuak-Kulit-pedas-l1',
+ 'Karupuak Kulit dengan tambahan cabai merah pilihan. Level pedas ringan, cocok untuk semua usia.',
  28000, NULL, 90, 100, 1, 0, 4.5, 12),
 
-(2, 'Karupuak Jangek Pedas Level 3',     'karupuak-jangek-pedas-l3',
+(2, 'Karupuak Kulit Pedas Level 3',     'karupuak-Kulit-pedas-l3',
  'Level pedas menengah. Sensasi pedas yang pas tanpa rasa terbakar berlebihan.',
  28000, NULL, 70, 100, 1, 1, 4.6, 20),
 
-(2, 'Karupuak Jangek Extra Pedas L5',    'karupuak-jangek-extra-pedas-l5',
+(2, 'Karupuak Kulit Extra Pedas L5',    'karupuak-Kulit-extra-pedas-l5',
  'Level pedas tertinggi! Hanya untuk pencinta pedas sejati. Berani coba?',
  32000, NULL, 40, 100, 1, 1, 4.4, 15),
 
 -- Kategori 3: Balado
-(3, 'Karupuak Jangek Balado 100gr',      'karupuak-jangek-balado-100gr',
+(3, 'Karupuak Kulit Balado 100gr',      'karupuak-Kulit-balado-100gr',
  'Bumbu balado Padang asli yang kaya rempah. Perpaduan sempurna antara pedas dan gurih.',
  30000, NULL, 85, 100, 1, 1, 4.9, 42),
 
-(3, 'Karupuak Jangek Balado 250gr',      'karupuak-jangek-balado-250gr',
+(3, 'Karupuak Kulit Balado 250gr',      'karupuak-Kulit-balado-250gr',
  'Balado dalam kemasan besar untuk keluarga pecinta rasa Padang.',
  65000, 60000, 60, 250, 1, 0, 4.8, 28),
 
 -- Kategori 4: BBQ
-(4, 'Karupuak Jangek Barbeque 100gr',    'karupuak-jangek-barbeque-100gr',
- 'Rasa barbeque smoky yang unik pada kerupuk jangek. Cocok untuk camilan modern.',
+(4, 'Karupuak Kulit Barbeque 100gr',    'karupuak-Kulit-barbeque-100gr',
+ 'Rasa barbeque smoky yang unik pada kerupuk Kulit. Cocok untuk camilan modern.',
  32000, NULL, 75, 100, 1, 0, 4.3, 9),
 
 -- Kategori 5: Hampers

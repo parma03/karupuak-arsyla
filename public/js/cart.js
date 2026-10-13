@@ -1,4 +1,4 @@
-/* public/js/cart.js — KARUPUAK JANGEK ARSYLA */
+/* public/js/cart.js — KARUPUAK Kulit ARSYLA */
 
 const CART_URL = (window.APP_URL || "") + "/karupuak-arsyla";
 

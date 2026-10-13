@@ -6,7 +6,7 @@
         <div class="ka-success-icon mb-4">🎉</div>
         <h2 class="fw-bold mb-2">Pesanan Berhasil!</h2>
         <p class="text-muted mb-4">
-          Terima kasih telah berbelanja di Karupuak Jangek Arsyla.<br>
+          Terima kasih telah berbelanja di Karupuak Kulit Arsyla.<br>
           Kami akan segera memproses pesanan Anda.
         </p>
 

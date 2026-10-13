@@ -1,7 +1,7 @@
 <?php
 // config/app.php
 
-define('APP_NAME',    'Karupuak Jangek Arsyla');
+define('APP_NAME',    'Karupuak Kulit Arsyla');
 define('APP_VERSION', '1.0.0');
 
 // ── Auto-detect base path & URL ────────────────────────────────────────────

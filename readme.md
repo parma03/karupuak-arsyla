@@ -1,6 +1,6 @@
-# 🥨 KARUPUAK JANGEK ARSYLA — E-Commerce Platform
+# 🥨 KARUPUAK Kulit ARSYLA — E-Commerce Platform
 
-> Platform e-commerce kerupuk jangek premium dengan arsitektur **CQRS + Clean Architecture**, dibangun menggunakan **PHP Native**, **Bootstrap 5**, dan **Midtrans Payment Gateway**.
+> Platform e-commerce kerupuk Kulit premium dengan arsitektur **CQRS + Clean Architecture**, dibangun menggunakan **PHP Native**, **Bootstrap 5**, dan **Midtrans Payment Gateway**.
 
 ---
 
@@ -565,4 +565,4 @@ Urutan pengerjaan yang direkomendasikan:
 
 ---
 
-_Dibuat untuk: KARUPUAK JANGEK ARSYLA © 2026_
+_Dibuat untuk: KARUPUAK Kulit ARSYLA © 2026_

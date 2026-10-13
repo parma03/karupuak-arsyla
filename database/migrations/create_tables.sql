@@ -1,5 +1,5 @@
 -- ============================================================
--- KARUPUAK JANGEK ARSYLA — Database Migration
+-- KARUPUAK Kulit ARSYLA — Database Migration
 -- Import ke phpMyAdmin atau jalankan via MySQL CLI
 -- ============================================================
 

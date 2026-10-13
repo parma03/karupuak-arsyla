@@ -123,7 +123,7 @@
 
     <div class="header">
         <h1>LAPORAN PENJUALAN</h1>
-        <p>Karupuak Jangek Arsyla — Padang, Sumatera Barat</p>
+        <p>Karupuak Kulit Arsyla — Padang, Sumatera Barat</p>
         <p>Periode: <?= date('d M Y', strtotime($from)) ?> s/d <?= date('d M Y', strtotime($to)) ?></p>
         <p>Dicetak: <?= date('d M Y H:i') ?></p>
     </div>
@@ -217,7 +217,7 @@
     </table>
 
     <div class="footer">
-        Laporan ini dibuat secara otomatis oleh sistem Karupuak Jangek Arsyla &copy; <?= date('Y') ?>
+        Laporan ini dibuat secara otomatis oleh sistem Karupuak Kulit Arsyla &copy; <?= date('Y') ?>
     </div>
 
 </body>

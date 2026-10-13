@@ -1,4 +1,4 @@
-/* public/js/app.js — KARUPUAK JANGEK ARSYLA */
+/* public/js/app.js — KARUPUAK Kulit ARSYLA */
 
 const APP_URL =
   document.querySelector('meta[name="app-url"]')?.content ||
